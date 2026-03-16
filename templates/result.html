@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2>📊 Ваш результат</h2>
+        <p><strong>Дата:</strong> {{ checkup.date.strftime('%d.%m.%Y %H:%M') }}</p>
+        <hr>
+        {{ report | replace('\n', '<br>') | safe }}
+        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Вернуться на главную</a>
+    </div>
+</div>
+{% endblock %}

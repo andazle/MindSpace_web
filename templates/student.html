@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🎓 Студенческие методики</h2>
+{% if tip %}
+<div class="card">
+    <div class="card-body">
+        <h3>{{ tip.problem }}</h3>
+        <h5 class="text-primary">{{ tip.methodology }}</h5>
+        <p>{{ tip.detail | replace('\n', '<br>') | safe }}</p>
+        <a href="{{ url_for('student') }}" class="btn btn-secondary">← К списку методик</a>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    {% for key, tip in tips.items() %}
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ tip.problem }}</h5>
+                <p class="card-text">{{ tip.methodology }}</p>
+                <a href="{{ url_for('student_detail', method=key) }}" class="btn btn-primary">Подробнее</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

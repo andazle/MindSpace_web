@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center">
+    <h1 class="mt-5">🧠 Добро пожаловать в MindSpace</h1>
+    <p class="lead">{{ disclaimer }}</p>
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Анализ дня</h5>
+                    <p class="card-text">Пройдите экспресс-чек-ап и получите персональные рекомендации.</p>
+                    <a href="{{ url_for('checkup') }}" class="btn btn-primary">Начать</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">📖 Дневник</h5>
+                    <p class="card-text">Записывайте свои мысли и отслеживайте эмоции.</p>
+                    <a href="{{ url_for('journal') }}" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🌬️ Дыхание</h5>
+                    <p class="card-text">Практика 4-7-8 для быстрого успокоения.</p>
+                    <a href="{{ url_for('breathing') }}" class="btn btn-primary">Выполнить</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">🎓 Студентам</h5>
+                    <p class="card-text">Методики для экзаменов, выгорания и тайм-менеджмента.</p>
+                    <a href="{{ url_for('student') }}" class="btn btn-primary">Изучить</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">👥 Группы поддержки</h5>
+                    <p class="card-text">Ресурсы, где можно получить помощь.</p>
+                    <a href="{{ url_for('support') }}" class="btn btn-primary">Узнать</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Моё состояние</h5>
+                    <p class="card-text">Посмотреть последние результаты чек-апа.</p>
+                    <a href="{{ url_for('my_state') }}" class="btn btn-primary">Показать</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

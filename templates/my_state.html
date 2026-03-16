@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📊 Моё последнее состояние</h2>
+<p><strong>Дата:</strong> {{ data.date }}</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Показатель</th>
+            <th>Оценка (1-10)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for key, (title, _) in questions.items() %}
+        <tr>
+            <td>{{ title }}</td>
+            <td>{{ data.get(key, '?') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('checkup') }}" class="btn btn-primary">Пройти новый чек-ап</a>
+{% endblock %}
