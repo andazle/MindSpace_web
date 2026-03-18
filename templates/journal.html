@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">📖 Дневник</h2>
+<div class="row">
+    <div class="col-md-5 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4>Новая запись</h4>
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.text(class="form-control", rows="5", placeholder="Напишите что у вас на душе...") }}
+                        {% for error in form.text.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {{ form.submit(class="btn btn-success") }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <h4>Последние записи</h4>
+        {% if entries %}
+        {% for entry in entries %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p class="card-text">{{ entry.text }}</p>
+                <small class="text-muted">{{ entry.date.strftime('%d.%m.%Y %H:%M') }}</small>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-muted">Пока нет записей. Напишите что-нибудь!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

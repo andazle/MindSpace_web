@@ -18,7 +18,7 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Это имя уже занято. Пожалуйста, выберите другое.')
+            raise ValidationError('Это имя уже занято.')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
@@ -41,3 +41,12 @@ class CheckupForm(FlaskForm):
 class JournalForm(FlaskForm):
     text = TextAreaField('Новая запись', validators=[DataRequired()])
     submit = SubmitField('Сохранить')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Отправить ссылку для сброса')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Новый пароль', validators=[DataRequired()])
+    confirm_password = PasswordField('Подтвердите пароль', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Сбросить пароль')

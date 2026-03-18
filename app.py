@@ -1,11 +1,14 @@
 import os
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+from threading import Thread
 from werkzeug.urls import url_parse
 
 from config import Config
 from models import db, User, Checkup, JournalEntry
-from forms import LoginForm, RegistrationForm, CheckupForm, JournalForm
+from forms import LoginForm, RegistrationForm, CheckupForm, JournalForm, RequestResetForm, ResetPasswordForm
 from utils import (
     SIMPLE_QUESTIONS_MAP, STUDENT_TIPS, SUPPORT_GROUPS_TEXT,
     MEDICAL_DISCLAIMER, simple_checkup_analysis
@@ -18,6 +21,9 @@ db.init_app(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# === ИНИЦИАЛИЗАЦИЯ ПОЧТЫ ===
+mail = Mail(app)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -26,6 +32,26 @@ def load_user(user_id):
 with app.app_context():
     db.create_all()
 
+# === ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ПОЧТЫ ===
+def send_async_email(app, msg):
+    with app.app_context():
+        mail.send(msg)
+
+def send_reset_email(user):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    token = serializer.dumps(user.email, salt='password-reset-salt')
+    msg = Message('Сброс пароля MindSpace',
+                  recipients=[user.email])
+    link = url_for('reset_token', token=token, _external=True)
+    msg.body = f'''Чтобы сбросить пароль, перейдите по ссылке:
+{link}
+
+Если вы не запрашивали сброс пароля, проигнорируйте это письмо.
+'''
+    thr = Thread(target=send_async_email, args=[app, msg])
+    thr.start()
+
+# === МАРШРУТЫ АУТЕНТИФИКАЦИИ ===
 @app.route('/')
 def index():
     if current_user.is_authenticated:
@@ -68,6 +94,42 @@ def register():
         return redirect(url_for('login'))
     return render_template('auth/register.html', form=form)
 
+# === МАРШРУТЫ СБРОСА ПАРОЛЯ ===
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            send_reset_email(user)
+            flash('Письмо с инструкцией отправлено на ваш email.', 'info')
+        else:
+            flash('Пользователь с таким email не найден.', 'warning')
+        return redirect(url_for('login'))
+    return render_template('auth/reset_request.html', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(token, salt='password-reset-salt', max_age=3600)  # 1 час
+    except:
+        flash('Ссылка недействительна или устарела.', 'warning')
+        return redirect(url_for('reset_request'))
+    user = User.query.filter_by(email=email).first_or_404()
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Пароль успешно изменён. Теперь вы можете войти.', 'success')
+        return redirect(url_for('login'))
+    return render_template('auth/reset_token.html', form=form)
+
+# === ОСНОВНЫЕ МАРШРУТЫ ПРИЛОЖЕНИЯ ===
 @app.route('/checkup', methods=['GET', 'POST'])
 @login_required
 def checkup():
@@ -98,7 +160,6 @@ def result(checkup_id):
     if checkup.user_id != current_user.id:
         flash('У вас нет доступа к этому результату')
         return redirect(url_for('index'))
-    # Преобразуем объект Checkup в словарь для анализа
     data = {
         'stress': checkup.stress,
         'sleep': checkup.sleep,
@@ -159,7 +220,7 @@ def journal():
         entry = JournalEntry(user_id=current_user.id, text=form.text.data)
         db.session.add(entry)
         db.session.commit()
-        flash('Запись добавлена')
+        flash('Запись добавлена', 'success')
         return redirect(url_for('journal'))
     entries = JournalEntry.query.filter_by(user_id=current_user.id).order_by(JournalEntry.date.desc()).limit(10).all()
     return render_template('journal.html', form=form, entries=entries)
