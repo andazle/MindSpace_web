@@ -1,12 +1,78 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2>📊 Ваш результат</h2>
-        <p><strong>Дата:</strong> {{ checkup.date.strftime('%d.%m.%Y %H:%M') }}</p>
-        <hr>
-        {{ report | replace('\n', '<br>') | safe }}
-        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Вернуться на главную</a>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Общая карточка с результатом -->
+        <div class="card border-0 shadow-lg p-4 p-md-5 mb-4">
+            <div class="text-center">
+                <h3 class="fw-bold mb-2">Результат чек-апа</h3>
+                <p class="text-muted mb-4">{{ checkup.date.strftime('%d %B %Y') }}</p>
+
+                <!-- Круговая диаграмма -->
+                <div class="position-relative d-inline-block mb-4">
+                    <svg width="150" height="150" viewBox="0 0 36 36" class="circular-chart"
+                        style="fill: none; stroke-width: 3;">
+                        <path class="circle-bg" stroke="#e9ecef"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" stroke="var(--primary)"
+                            stroke-dasharray="{{ (report.score / report.max_score) * 100 }}, 100"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                            style="animation: fillup 1s ease-out forwards;" />
+                    </svg>
+                    <div class="position-absolute top-50 start-50 translate-middle">
+                        <h2 class="fw-bold mb-0" style="color: var(--text-color);">{{ report.score }}</h2>
+                        <span class="text-muted small">из {{ report.max_score }}</span>
+                    </div>
+                </div>
+
+                <h4 class="fw-bold mb-3">{{ report.recommendation_title }}</h4>
+                <div class="bg-light p-4 text-start mb-4"
+                    style="border-radius: 15px; border-left: 4px solid var(--primary);">
+                    <p class="mb-0">{{ report.recommendation_text }}</p>
+                </div>
+            </div>
+
+            <!-- Детальный разбор по критериям -->
+            <h5 class="fw-bold mt-4 mb-3">📊 Подробный анализ по каждому критерию</h5>
+            <div class="row">
+                {% for item in report.details %}
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-medium">{{ item.label }}</span>
+                        <span class="badge bg-light text-dark">{{ item.value }}/10</span>
+                    </div>
+                    <div class="progress mb-2" style="height: 8px; border-radius: 10px;">
+                        <div class="progress-bar" role="progressbar"
+                            style="width: {{ (item.value / item.max) * 100 }}%; background-color: var(--primary);"
+                            aria-valuenow="{{ item.value }}" aria-valuemin="0" aria-valuemax="10"></div>
+                    </div>
+                    <p class="small text-muted mb-2">{{ item.comment }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Кнопки -->
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{{ url_for('checkups_history') }}" class="btn btn-outline-dark rounded-pill px-4">
+                    К истории
+                </a>
+                <a href="{{ url_for('journal') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+                    Записать в дневник
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    @keyframes fillup {
+        from {
+            stroke-dasharray: 0, 100;
+        }
+    }
+
+    .progress-bar {
+        transition: width 0.5s ease;
+    }
+</style>
 {% endblock %}

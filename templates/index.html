@@ -1,63 +1,69 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="text-center">
-    <h1 class="mt-5">🧠 Добро пожаловать в MindSpace</h1>
-    <p class="lead">{{ disclaimer }}</p>
-    <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">🎯 Анализ дня</h5>
-                    <p class="card-text">Пройдите экспресс-чек-ап и получите персональные рекомендации.</p>
-                    <a href="{{ url_for('checkup') }}" class="btn btn-primary">Начать</a>
+<!-- Герой-секция -->
+<section class="hero-section text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">
+            MindSpace — забота о ментальном здоровье становится привычкой
+        </h1>
+        <p class="lead mb-4">
+            Простые инструменты для студентов: отслеживай самочувствие, веди дневник, осваивай техники релаксации.
+        </p>
+        <a href="{{ url_for('checkup') }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow">
+            Пройти чек-ап
+        </a>
+    </div>
+</section>
+
+<!-- Блок с тремя основными направлениями -->
+<section class="services-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Карточка 1: Чек-ап -->
+            <div class="col-md-4">
+                <div class="service-card text-center p-4 h-100 bg-white rounded-4 shadow-sm">
+                    <div class="service-icon mb-3">
+                        <i class="bi bi-clipboard2-pulse fs-1" style="color: var(--primary);"></i>
+                    </div>
+                    <h3 class="h5 fw-bold">Чек-ап самочувствия</h3>
+                    <p class="text-muted">Оцени своё состояние по 10 параметрам и получи персональные рекомендации.</p>
+                    <a href="{{ url_for('checkup') }}" class="btn btn-outline-primary rounded-pill mt-2">Начать</a>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">📖 Дневник</h5>
-                    <p class="card-text">Записывайте свои мысли и отслеживайте эмоции.</p>
-                    <a href="{{ url_for('journal') }}" class="btn btn-primary">Перейти</a>
+            <!-- Карточка 2: Дневник -->
+            <div class="col-md-4">
+                <div class="service-card text-center p-4 h-100 bg-white rounded-4 shadow-sm">
+                    <div class="service-icon mb-3">
+                        <i class="bi bi-journal-bookmark-fill fs-1" style="color: var(--primary);"></i>
+                    </div>
+                    <h3 class="h5 fw-bold">Дневник настроения</h3>
+                    <p class="text-muted">Записывай мысли и эмоции, чтобы лучше понимать себя.</p>
+                    <a href="{{ url_for('journal') }}" class="btn btn-outline-primary rounded-pill mt-2">Вести
+                        дневник</a>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">🌬️ Дыхание</h5>
-                    <p class="card-text">Практика 4-7-8 для быстрого успокоения.</p>
-                    <a href="{{ url_for('breathing') }}" class="btn btn-primary">Выполнить</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">🎓 Студентам</h5>
-                    <p class="card-text">Методики для экзаменов, выгорания и тайм-менеджмента.</p>
-                    <a href="{{ url_for('student') }}" class="btn btn-primary">Изучить</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">👥 Группы поддержки</h5>
-                    <p class="card-text">Ресурсы, где можно получить помощь.</p>
-                    <a href="{{ url_for('support') }}" class="btn btn-primary">Узнать</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">📊 Моё состояние</h5>
-                    <p class="card-text">Посмотреть последние результаты чек-апа.</p>
-                    <a href="{{ url_for('my_state') }}" class="btn btn-primary">Показать</a>
+            <!-- Карточка 3: Дыхание -->
+            <div class="col-md-4">
+                <div class="service-card text-center p-4 h-100 bg-white rounded-4 shadow-sm">
+                    <div class="service-icon mb-3">
+                        <i class="bi bi-wind fs-1" style="color: var(--primary);"></i>
+                    </div>
+                    <h3 class="h5 fw-bold">Дыхательные практики</h3>
+                    <p class="text-muted">Успокойся за пару минут с помощью научно обоснованных упражнений.</p>
+                    <a href="{{ url_for('breathing') }}"
+                        class="btn btn-outline-primary rounded-pill mt-2">Попробовать</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Дисклеймер -->
+<section class="disclaimer-section py-4">
+    <div class="container">
+        <div class="alert alert-light border text-center" role="alert">
+            {{ disclaimer }}
+        </div>
+    </div>
+</section>
 {% endblock %}

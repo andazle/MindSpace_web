@@ -4,59 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindSpace – Забота о себе</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    <title>MindSpace — пространство заботы о себе</title>
+    <!-- Bootstrap 5 + иконки -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Наши стили -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Свой CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
 </head>
 
-<body class="d-flex flex-column min-vh-100">
-    <!-- Панель для слабовидящих (скрыта по умолчанию) -->
-    <div id="accessibility-panel" class="accessibility-panel" style="display: none;">
-        <div class="panel-header">
-            <span>Версия для слабовидящих</span>
-            <button id="close-panel" class="btn-close" aria-label="Закрыть"></button>
-        </div>
-        <div class="panel-body">
-            <div class="panel-section">
-                <label>Размер шрифта</label>
-                <div class="font-size-controls">
-                    <button id="font-decrease" class="btn btn-sm btn-outline-primary">A–</button>
-                    <button id="font-increase" class="btn btn-sm btn-outline-primary">A+</button>
-                </div>
+<body>
+    <!-- Панель доступности (скрыта по умолчанию) -->
+    <div id="accessibility-panel" class="accessibility-panel">
+        <div class="container">
+            <div class="panel-header">
+                <span><i class="bi bi-universal-access me-2"></i>Панель доступности</span>
+                <button id="close-panel" class="btn-close" aria-label="Закрыть"></button>
             </div>
-            <div class="panel-section">
-                <label>Цвета сайта</label>
-                <div class="color-schemes">
-                    <button class="color-btn" data-scheme="default"
-                        style="background: #f8f9fa; color: #212529;">Обычная</button>
-                    <button class="color-btn" data-scheme="black-yellow"
-                        style="background: #000; color: #ff0;">Ч/Ж</button>
-                    <button class="color-btn" data-scheme="black-white"
-                        style="background: #000; color: #fff;">Ч/Б</button>
-                    <button class="color-btn" data-scheme="blue-yellow"
-                        style="background: #003366; color: #ff0;">С/Ж</button>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <div class="btn-group me-2" role="group">
+                    <button id="font-decrease" class="btn btn-outline-secondary" title="Уменьшить шрифт">
+                        <i class="bi bi-dash-lg"></i> A
+                    </button>
+                    <button id="font-increase" class="btn btn-outline-secondary" title="Увеличить шрифт">
+                        <i class="bi bi-plus-lg"></i> A
+                    </button>
                 </div>
-            </div>
-            <div class="panel-section">
-                <label>Изображения</label>
-                <div class="image-controls">
-                    <button id="toggle-images" class="btn btn-sm btn-outline-primary">Отключить изображения</button>
+                <div class="btn-group me-2" role="group">
+                    <button class="color-btn btn btn-outline-secondary" data-scheme="default" title="Стандартная схема">
+                        <i class="bi bi-palette"></i>
+                    </button>
+                    <button class="color-btn btn btn-outline-dark" data-scheme="black-white" title="Чёрно-белая схема">
+                        <i class="bi bi-circle-half"></i>
+                    </button>
+                    <button class="color-btn btn btn-outline-warning" data-scheme="black-yellow"
+                        title="Жёлто-чёрная схема">
+                        <i class="bi bi-brightness-high"></i>
+                    </button>
                 </div>
-            </div>
-            <div class="panel-section">
-                <button id="reset-settings" class="btn btn-sm btn-warning">Обычная версия</button>
+                <button id="toggle-images" class="btn btn-outline-secondary me-2" title="Скрыть/показать изображения">
+                    <i class="bi bi-eye-slash"></i> Изображения
+                </button>
+                <button id="reset-settings" class="btn btn-outline-secondary" title="Сбросить настройки">
+                    <i class="bi bi-arrow-counterclockwise"></i> Сброс
+                </button>
             </div>
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm py-2">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
-                <i class="bi bi-brain"></i> MindSpace
+                <i class="bi bi-flower1 me-2" style="color: var(--primary);"></i>MindSpace
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -67,17 +69,25 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Главная</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('checkup') }}">Чек-ап</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('my_state') }}">Моё состояние</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('student') }}">Студентам</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('journal') }}">Дневник</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('student') }}">Студентам</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('breathing') }}">Дыхание</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('support') }}">Поддержка</a></li>
-                    <!-- Кнопка для слабовидящих -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="enable-accessibility">
-                            <i class="bi bi-eye"></i> Версия для слабовидящих
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ current_user.username }}
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Выйти</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Выйти</a></li>
+                    <!-- Кнопка открытия панели доступности -->
+                    <li class="nav-item ms-2">
+                        <button id="enable-accessibility" class="btn btn-outline-secondary btn-sm"
+                            title="Панель доступности">
+                            <i class="bi bi-universal-access"></i>
+                        </button>
+                    </li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Войти</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Регистрация</a></li>
@@ -87,12 +97,13 @@
         </div>
     </nav>
 
-    <main class="container my-4 flex-grow-1">
+    <!-- Основной контент -->
+    <main class="container mt-5 pt-4">
+        <!-- Сообщения flash -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
-        <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show"
-            role="alert">
+        <div class="alert alert-{{ category if category else 'info' }} alert-dismissible fade show mt-3" role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
@@ -103,16 +114,19 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container text-center text-muted">
-            <small>© 2026 MindSpace. Забота о себе — просто.</small>
+    <!-- Футер -->
+    <footer class="mt-5 py-4 bg-white border-top">
+        <div class="container text-center text-muted small">
+            <p class="mb-1">© 2025 MindSpace — проект поддержки ментального здоровья студентов</p>
+            <p class="mb-0">Если вам нужна срочная помощь, позвоните: <strong>8-800-2000-122</strong></p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Наш JS для доступности -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- Скрипты Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Свой JavaScript (панель доступности) -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
 </body>
 
 </html>

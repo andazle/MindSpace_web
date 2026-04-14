@@ -1,28 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>🎓 Студенческие методики</h2>
-{% if tip %}
-<div class="card">
-    <div class="card-body">
-        <h3>{{ tip.problem }}</h3>
-        <h5 class="text-primary">{{ tip.methodology }}</h5>
-        <p>{{ tip.detail | replace('\n', '<br>') | safe }}</p>
-        <a href="{{ url_for('student') }}" class="btn btn-secondary">← К списку методик</a>
+<div class="row justify-content-center mb-5">
+    <div class="col-lg-8 text-center">
+        <div class="mb-3 text-primary" style="font-size: 3rem;"><i class="bi bi-mortarboard"></i></div>
+        <h2 class="fw-bold mb-3">Студентам: как не сгореть до дедлайна</h2>
+        <p class="text-muted">Учеба, лабы, кодинг по ночам — всё это сильно бьет по нервной системе. Вот несколько
+            рабочих методик, чтобы сохранить фокус и здоровье.</p>
     </div>
 </div>
-{% else %}
-<div class="row">
-    {% for key, tip in tips.items() %}
-    <div class="col-md-4 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ tip.problem }}</h5>
-                <p class="card-text">{{ tip.methodology }}</p>
-                <a href="{{ url_for('student_detail', method=key) }}" class="btn btn-primary">Подробнее</a>
-            </div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm p-4">
+            <h5 class="fw-bold"><i class="bi bi-eye text-primary me-2"></i> Правило 20-20-20</h5>
+            <p class="text-muted mb-0">При долгой работе за монитором глаза перенапрягаются, что ведет к головным болям.
+                Каждые 20 минут смотри на объект в 20 футах (6 метрах) от тебя в течение 20 секунд. Дай фокусу
+                отдохнуть.</p>
         </div>
     </div>
-    {% endfor %}
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm p-4">
+            <h5 class="fw-bold"><i class="bi bi-cup-hot text-primary me-2"></i> Метод Помодоро</h5>
+            <p class="text-muted mb-0">Разбивай сложные задачи (например, написание кода или курсача) на интервалы: 25
+                минут работы и 5 минут отдыха. После 4 циклов делай большой перерыв на 15-30 минут.</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm p-4">
+            <h5 class="fw-bold"><i class="bi bi-moon-stars text-primary me-2"></i> Режим сна</h5>
+            <p class="text-muted mb-0">Бессонные ночи перед экзаменами снижают когнитивные функции. Мозгу нужно минимум
+                7-8 часов для консолидации памяти. Попробуй откладывать телефон за час до сна.</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm p-4">
+            <h5 class="fw-bold"><i class="bi bi-person-arms-up text-primary me-2"></i> Физическая активность</h5>
+            <p class="text-muted mb-0">Даже легкая пробежка или 15-минутная растяжка разгоняют кровь и улучшают
+                снабжение мозга кислородом. Сидение за партой или компьютером — главный враг твоей спины.</p>
+        </div>
+    </div>
 </div>
-{% endif %}
 {% endblock %}

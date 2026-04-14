@@ -1,22 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>📊 Моё последнее состояние</h2>
-<p><strong>Дата:</strong> {{ data.date }}</p>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Показатель</th>
-            <th>Оценка (1-10)</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for key, (title, _) in questions.items() %}
-        <tr>
-            <td>{{ title }}</td>
-            <td>{{ data.get(key, '?') }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{{ url_for('checkup') }}" class="btn btn-primary">Пройти новый чек-ап</a>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-lg p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold mb-0">Моё состояние</h3>
+                <span class="text-muted">{{ data.date }}</span>
+            </div>
+
+            <p class="text-muted mb-4">Результаты последнего чек-апа (оценки от 1 до 10)</p>
+
+            {% for key, label in questions.items() %}
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="fw-medium">{{ label }}</span>
+                    <span class="fw-bold">{{ data[key] }}</span>
+                </div>
+                <div class="progress" style="height: 8px; border-radius: 10px;">
+                    <div class="progress-bar" role="progressbar"
+                        style="width: {{ (data[key] / 10) * 100 }}%; background-color: var(--primary);"
+                        aria-valuenow="{{ data[key] }}" aria-valuemin="0" aria-valuemax="10"></div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-between mt-5">
+                <a href="{{ url_for('checkup') }}" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="bi bi-arrow-repeat me-2"></i>Пройти заново
+                </a>
+                <form action="{{ url_for('delete_checkup', checkup_id=checkup_id) }}" method="POST"
+                    onsubmit="return confirm('Удалить этот результат?');">
+                    <button type="submit" class="btn btn-outline-danger rounded-pill px-4">
+                        <i class="bi bi-trash me-2"></i>Удалить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
