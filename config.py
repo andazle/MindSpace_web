@@ -5,7 +5,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
 
-    # База данных
     if os.environ.get('AMVERA'):
         SQLALCHEMY_DATABASE_URI = 'sqlite:////data/database.db'
     else:
@@ -13,7 +12,6 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # === НАСТРОЙКИ ПОЧТЫ (универсальные) ===
     MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'smtp.mail.ru'
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes']

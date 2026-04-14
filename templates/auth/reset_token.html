@@ -1,28 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="card-title text-center">Новый пароль</h2>
-                <form method="post">
-                    {{ form.hidden_tag() }}
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                        {% for error in form.password.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.confirm_password.label(class="form-label") }}
-                        {{ form.confirm_password(class="form-control") }}
-                        {% for error in form.confirm_password.errors %}
-                        <div class="text-danger">{{ error }}</div>
-                        {% endfor %}
-                    </div>
-                    {{ form.submit(class="btn btn-primary w-100") }}
-                </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <h2 class="fw-bold text-center mb-4">Новый пароль</h2>
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Новый пароль</label>
+                            {{ form.password(class="form-control form-control-lg", style="background: #f8f9fa; border:
+                            none; border-radius: 12px;") }}
+                            {% for error in form.password.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">Подтвердите пароль</label>
+                            {{ form.confirm_password(class="form-control form-control-lg", style="background: #f8f9fa;
+                            border: none; border-radius: 12px;") }}
+                            {% for error in form.confirm_password.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {{ form.submit(class="btn btn-primary w-100 py-3 shadow-sm") }}
+                    </form>
+                </div>
             </div>
         </div>
     </div>

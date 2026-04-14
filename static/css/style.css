@@ -1,0 +1,180 @@
+:root {
+    /* Стандартная палитра */
+    --primary: #00d38d;
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-color: #2d3436;
+    --text-muted: #636e72;
+    --border-color: #e9ecef;
+
+    /* Типографика */
+    --font-main: 'Inter', system-ui, sans-serif;
+    --font-size-multiplier: 1;
+    --radius: 20px;
+    --radius-small: 12px;
+}
+
+html {
+    font-size: calc(16px * var(--font-size-multiplier));
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    line-height: 1.6;
+    transition: all 0.2s ease;
+    margin: 0;
+    padding-top: 60px;
+}
+
+/* Наследование цветов */
+.navbar,
+.accessibility-panel,
+footer,
+.card {
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.form-control,
+.form-label {
+    color: var(--text-color) !important;
+}
+
+/* Карточки */
+.card {
+    background: var(--card-bg);
+    border: none;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -12px rgba(0, 211, 141, 0.15);
+}
+
+/* Кнопки */
+.btn-primary {
+    background-color: var(--primary) !important;
+    border: none !important;
+    border-radius: 0.75rem !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-outline-primary {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    border-radius: 2rem !important;
+    padding: 0.5rem 1.5rem !important;
+    font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+}
+
+/* Панель доступности */
+.accessibility-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 3px solid var(--primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    padding: 1.5rem;
+    display: none;
+}
+
+.panel-header {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Цветовые схемы */
+body.color-scheme-black-yellow {
+    --bg-color: #000000 !important;
+    --card-bg: #000000 !important;
+    --text-color: #ffff00 !important;
+    --primary: #ffff00 !important;
+    --text-muted: #aaaaaa !important;
+    --border-color: #ffff00 !important;
+}
+
+body.color-scheme-black-white {
+    --bg-color: #000000 !important;
+    --card-bg: #000000 !important;
+    --text-color: #000000 !important;
+    --primary: #ffffff !important;
+    --text-muted: #aaaaaa !important;
+    --border-color: #ffffff !important;
+}
+
+/* Скрытие изображений */
+body.images-hidden img {
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+}
+
+/* Герой-секция (для index) */
+.hero-section {
+    background: linear-gradient(145deg, #f8fffc 0%, #e6faf2 100%);
+    border-radius: 0 0 3rem 3rem;
+    margin-bottom: 2rem;
+}
+
+/* Карточки услуг */
+.service-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 211, 141, 0.1);
+    border-radius: 1.5rem !important;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 30px -10px rgba(0, 211, 141, 0.15) !important;
+    border-color: var(--primary);
+}
+
+.service-icon {
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    background: rgba(0, 211, 141, 0.1);
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+/* Блок сообщества */
+.community-section {
+    border-radius: 3rem 3rem 0 0;
+}
+
+/* Адаптивные отступы */
+@media (max-width: 768px) {
+    .hero-section {
+        border-radius: 0 0 2rem 2rem;
+    }
+}

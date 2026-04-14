@@ -2,8 +2,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import pytz
 
 db = SQLAlchemy()
+
+def novosibirsk_time():
+    """Возвращает текущее время в часовом поясе Новосибирска"""
+    tz = pytz.timezone('Asia/Novosibirsk')
+    return datetime.now(tz)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -11,7 +17,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=novosibirsk_time)
 
     checkups = db.relationship('Checkup', backref='user', lazy='dynamic')
     journal_entries = db.relationship('JournalEntry', backref='user', lazy='dynamic')
@@ -26,7 +32,7 @@ class Checkup(db.Model):
     __tablename__ = 'checkups'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.DateTime, default=novosibirsk_time)
 
     stress = db.Column(db.Integer)
     sleep = db.Column(db.Integer)
@@ -43,5 +49,5 @@ class JournalEntry(db.Model):
     __tablename__ = 'journal_entries'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.DateTime, default=novosibirsk_time)
     text = db.Column(db.Text, nullable=False)
